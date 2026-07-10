@@ -1,0 +1,58 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.Buildout
+*.pydevproject
+.settings/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code related
+.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.buildlog/
+.android/
+/ios/Flutter/Flutter.framework
+/ios/Flutter/Flutter.podspec
+**/ios/Flutter/.gitkeep
+**/ios/.generated/
+flutter_apk_manager/
+flutter_settings/
+
+# Gradle related
+android/.gradle/
+android/app/debug/
+android/app/profile/
+android/build/
+android/app/build/
+
+# Local properties
+android/local.properties
+
+# Keystore
+android/app/key.properties
+android/app/keystore.jks
+
+# Symbol files
+*.symbols.requires
+
+# ProGuard
+proguard/
+
+# Version control
+vcs-1/
