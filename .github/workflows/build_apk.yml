@@ -29,6 +29,13 @@ jobs:
           channel: 'stable'
           cache: true
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: 35
+          ndk: 25.1.8937393
+          build-tools: 35.0.0
+
       - name: Build Release APK
         working-directory: flutter_app
         run: flutter build apk --release
