@@ -27,9 +27,13 @@ jobs:
          with:
            flutter-version: '3.32.4'
            channel: 'stable'
-           cache: true
+           cache: false
            android-sdk: true
            ndk: true
+
+       - name: Clean Flutter
+         working-directory: flutter_app
+         run: flutter clean
 
        - name: Flutter Pub Get
          working-directory: flutter_app
