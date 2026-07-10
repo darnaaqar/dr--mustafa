@@ -7,6 +7,7 @@ import 'screens/services_screen.dart';
 import 'screens/gallery_screen.dart';
 import 'screens/about_screen.dart';
 import 'screens/contact_screen.dart';
+import 'screens/appointments_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool isArabic;
@@ -343,7 +344,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                         SnackBar(
                                           backgroundColor: DentalColors.cardBg,
                                           content: Text(
-                                            'Booking failed. Please try again.',
+                                            widget.isArabic ? 'فشل الحجز. يرجى المحاولة مرة أخرى' : 'Booking failed. Please try again.',
                                             style: const TextStyle(color: Colors.redAccent),
                                             textAlign: TextAlign.center,
                                           ),
@@ -549,7 +550,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     GalleryScreen(isArabic: widget.isArabic),
                     AboutScreen(isArabic: widget.isArabic),
                     ContactScreen(isArabic: widget.isArabic),
-                    _buildPlaceholderTab('Appointments Coming Soon'),
+                    AppointmentsScreen(
+                      isArabic: widget.isArabic,
+                      onBookClick: () => _openBookingWizard(context),
+                    ),
                   ],
                 ),
               ),
@@ -627,6 +631,21 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               fontStyle: FontStyle.italic,
             ),
           ),
+
+          const SizedBox(height: 24),
+
+          // Doctor Profile Image
+          Container(
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: DentalColors.primaryAccent, width: 2),
+            ),
+            child: CircleAvatar(
+              radius: 60,
+              backgroundImage: const AssetImage('assets/images/doctor_profile.png'),
+            ),
+          ).animate().fadeIn().scale(),
 
           const SizedBox(height: 32),
 

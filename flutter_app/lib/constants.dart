@@ -34,7 +34,7 @@ class DentalTranslations {
       'bookings': 'مواعيدي والإشعارات',
       'premium_system': 'نظام عيادة متميز',
       'all_precision': 'دقة متناهية',
-      'all_precision_desc': 'استخدام المسح ثلاثي الأبعاد لضمان التوافق التام مع عظام الفك.',
+      'all_precision_desc': 'استخدام المسح ثلثى الأبعاد لضمان التوافق التام مع عظام الفك.',
       'rapid_exec': 'سرعة التنفيذ',
       'rapid_exec_desc': 'تقنيات حديثة تقلل من عدد الزيارات وفترات الانتظار الطويلة.',
       'natural_glow': 'نتائج طبيعية دائمة',
@@ -49,9 +49,10 @@ class DentalTranslations {
       'success_booking': 'تم تقديم طلب الحجز بنجاح!',
       'no_services': 'لا توجد خدمات متاحة حالياً',
       'no_gallery': 'لا توجد صور في المعرض حالياً',
+      'no_appointments': 'لا توجد مواعيد محجوزة حالياً',
     },
     'en': {
-      'title': 'Dr. Mustafa Al-Rifai',
+      'title': 'Dr. Mustafa Al-Rifaie',
       'subtitle': 'Dental Care & Aesthetics',
       'tagline': 'طب وتجميل الأسنان',
       'book_btn': 'Book Your Appointment',
@@ -82,6 +83,7 @@ class DentalTranslations {
       'success_booking': 'Appointment submitted successfully!',
       'no_services': 'No services available at the moment',
       'no_gallery': 'No gallery images available at the moment',
+      'no_appointments': 'No appointments booked at the moment',
     }
   };
 }

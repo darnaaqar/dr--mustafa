@@ -15,6 +15,7 @@ dependencies:
   url_launcher: ^6.2.5             # For phone/whatsapp dialing
   flutter_animate: ^4.5.0          # For smooth holographic animations
   intl: ^0.19.0                    # Date formatting
+  shared_preferences: ^2.2.2       # For device ID storage
 
 dev_dependencies:
   flutter_test:
@@ -23,3 +24,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/images/

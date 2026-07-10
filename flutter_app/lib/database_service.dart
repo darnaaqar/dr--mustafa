@@ -1,4 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DatabaseService {
   static final DatabaseService instance = DatabaseService._init();
@@ -11,6 +12,17 @@ class DatabaseService {
   }
 
   bool get isInitialized => _isInitialized;
+
+  // Get device ID for appointment tracking
+  Future<String> _getDeviceId() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? deviceId = prefs.getString('device_id');
+    if (deviceId == null) {
+      deviceId = DateTime.now().millisecondsSinceEpoch.toString();
+      await prefs.setString('device_id', deviceId);
+    }
+    return deviceId;
+  }
 
   // Fetch settings from Supabase
   Future<Map<String, dynamic>?> getSettings() async {
@@ -92,7 +104,7 @@ class DatabaseService {
     }
   }
 
-  // Save booked appointment to database
+  // Save booked appointment to database (one per device)
   Future<bool> bookAppointment({
     required String name,
     required String phone,
@@ -107,20 +119,76 @@ class DatabaseService {
       return false;
     }
     try {
+      final deviceId = await _getDeviceId();
       final client = Supabase.instance.client;
-      await client.from('appointments').insert({
-        'patient_name': name,
-        'phone': phone,
-        'service_id': serviceId,
-        'preferred_language': preferredLanguage,
-        'appointment_date': date,
-        'appointment_time': time,
-        'notes': notes,
-        'status': 'pending',
-      });
+      
+      // Check if appointment already exists for this device
+      final existing = await client
+          .from('appointments')
+          .select('*')
+          .eq('device_id', deviceId)
+          .maybeSingle();
+      
+      if (existing != null) {
+        // Update existing appointment
+        await client.from('appointments').update({
+          'patient_name': name,
+          'phone': phone,
+          'service_id': serviceId,
+          'preferred_language': preferredLanguage,
+          'appointment_date': date,
+          'appointment_time': time,
+          'notes': notes,
+          'status': 'pending',
+        }).eq('device_id', deviceId);
+      } else {
+        // Insert new appointment
+        await client.from('appointments').insert({
+          'device_id': deviceId,
+          'patient_name': name,
+          'phone': phone,
+          'service_id': serviceId,
+          'preferred_language': preferredLanguage,
+          'appointment_date': date,
+          'appointment_time': time,
+          'notes': notes,
+          'status': 'pending',
+        });
+      }
       return true;
     } catch (e) {
       print("Booking insert error: $e");
+      return false;
+    }
+  }
+
+  // Get current appointment for this device
+  Future<Map<String, dynamic>?> getCurrentAppointment() async {
+    if (!_isInitialized) return null;
+    try {
+      final deviceId = await _getDeviceId();
+      final client = Supabase.instance.client;
+      final response = await client
+          .from('appointments')
+          .select('*, services(name_ar, name_en)')
+          .eq('device_id', deviceId)
+          .maybeSingle();
+      return response;
+    } catch (e) {
+      print("Get appointment error: $e");
+      return null;
+    }
+  }
+
+  // Cancel/Delete appointment
+  Future<bool> cancelAppointment(String appointmentId) async {
+    if (!_isInitialized) return false;
+    try {
+      final client = Supabase.instance.client;
+      await client.from('appointments').delete().eq('id', appointmentId);
+      return true;
+    } catch (e) {
+      print("Cancel appointment error: $e");
       return false;
     }
   }

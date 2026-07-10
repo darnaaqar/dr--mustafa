@@ -58,8 +58,8 @@ class _AboutScreenState extends State<AboutScreen> {
         ? (_doctorInfo?['about_ar'] ?? 'د. مصطفى الرفاعي هو رائد في مجال طب وتجميل الأسنان الرقمي بأكثر من 15 عاماً من الخبرة السريرية المتقدمة. متخصص في الجراحات الدقيقة والزراعة الفورية والابتسامات الرقمية المتطورة المدعومة بالذكاء الاصطناعي.')
         : (_doctorInfo?['about_en'] ?? 'Dr. Mustafa Al-Rifai is a leader in digital cosmetic dentistry with over 15 years of advanced clinical experience. Specializes in precision micro-surgery, immediate loading implants, and AI-powered smile design.');
     
-    final experience = _doctorInfo?['experience_years']?.toString() ?? '15';
-    final imageUrl = _doctorInfo?['image_url'] ?? 'https://lh3.googleusercontent.com/aida-public/AB6AXuBQGk9T8T-E-dTpTss5FQxeaLgfuT6D7b8knwLxoma7ZhneQUbTV6jegwf83Rz3Wsi-1ojfZUr4lObSfdbX8qJs_GRO-1BDl9AUgNUb0Z60o8xRS9X-FtvMzMNib-qoykcBsefefS1Hhaf0u5mEuLb83liLjH7sos8ZJOA7njPRorV-taMls7PyH_FyRFsPwcu0h8c2UUGlTi9rSDRoelBrHe30tc3qJpL7eQi6euwC_Dofi6FIaIkTEyIqa6zWRKrNA2ZqGbxXlPo';
+     final experience = _doctorInfo?['experience_years']?.toString() ?? '15';
+     final imageUrl = _doctorInfo?['image_url'];
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
@@ -73,7 +73,9 @@ class _AboutScreenState extends State<AboutScreen> {
             ),
             child: CircleAvatar(
               radius: 60,
-              backgroundImage: NetworkImage(imageUrl),
+              backgroundImage: imageUrl != null 
+                  ? NetworkImage(imageUrl)
+                  : const AssetImage('assets/images/doctor_profile.png') as ImageProvider,
             ),
           ).animate().fadeIn().scale(),
           const SizedBox(height: 24),
