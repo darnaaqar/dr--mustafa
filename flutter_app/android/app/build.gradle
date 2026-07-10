@@ -15,7 +15,6 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace = "com.dr_mustafa.dental_clinic_app"
     compileSdk = 35
-    ndkVersion = "26.3.11579264"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
