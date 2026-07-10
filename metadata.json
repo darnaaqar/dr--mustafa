@@ -1,0 +1,6 @@
+{
+  "name": "Dr. Mustafa Al-Rifai Dental Clinic",
+  "description": "An elegant, futuristic bilingual Arabic/English dental care application for Dr. Mustafa Al-Rifai's clinic, integrated with Supabase.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
