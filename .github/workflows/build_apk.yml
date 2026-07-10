@@ -31,6 +31,10 @@ jobs:
            android-sdk: true
            ndk: true
 
+       - name: Flutter Pub Get
+         working-directory: flutter_app
+         run: flutter pub get
+
        - name: Build Release APK
          working-directory: flutter_app
          run: flutter build apk --release --split-per-abi
