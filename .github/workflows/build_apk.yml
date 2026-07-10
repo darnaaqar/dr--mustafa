@@ -29,9 +29,6 @@ jobs:
           channel: 'stable'
           cache: false
 
-      - name: Accept Android SDK Licenses
-        run: echo "y" | flutter doctor --android-licenses || true
-
       - name: Clean Flutter
         working-directory: flutter_app
         run: flutter clean
