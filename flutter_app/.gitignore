@@ -56,3 +56,8 @@ proguard/
 
 # Version control
 vcs-1/
+
+# Config/secrets
+config.txt
+*.key
+*.pem
