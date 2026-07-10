@@ -32,11 +32,9 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
         with:
-          api-level: 35
-          ndk-version: 27.0.120979733
-
-      - name: Accept Android SDK Licenses
-        run: yes | flutter doctor --android-licenses || true
+          cmdline-tools-version: '11173924'
+          accept-android-sdk-licenses: true
+          packages: 'build-tools;34.0.0,platforms;android-35,ndk;27.0.120979733'
 
       - name: Clean Flutter
         working-directory: flutter_app

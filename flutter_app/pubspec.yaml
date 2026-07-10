@@ -10,12 +10,11 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
-  supabase_flutter: ^2.8.0         # Supabase Client SDK
+  supabase_flutter: ^2.5.0         # Supabase Client SDK
   google_fonts: ^6.1.0             # For Cairo and Inter typography
   url_launcher: ^6.2.5             # For phone/whatsapp dialing
   flutter_animate: ^4.5.0          # For smooth holographic animations
   intl: ^0.19.0                    # Date formatting
-  app_links: ^7.2.1                # App links for deep linking (required by supabase)
 
 dev_dependencies:
   flutter_test:
