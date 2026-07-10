@@ -22,26 +22,26 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-       - name: Set up Flutter
-         uses: subosito/flutter-action@v2
-         with:
-           flutter-version: '3.32.4'
-           channel: 'stable'
-           cache: false
-           android-sdk: true
-           ndk: true
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.32.4'
+          channel: 'stable'
+          cache: false
+          android-sdk: true
+          ndk: true
 
-       - name: Clean Flutter
-         working-directory: flutter_app
-         run: flutter clean
+      - name: Clean Flutter
+        working-directory: flutter_app
+        run: flutter clean
 
-       - name: Flutter Pub Get
-         working-directory: flutter_app
-         run: flutter pub get
+      - name: Flutter Pub Get
+        working-directory: flutter_app
+        run: flutter pub get
 
-       - name: Build Release APK
-         working-directory: flutter_app
-         run: flutter build apk --release --split-per-abi --android-skip-build-dependency-validation
+      - name: Build Release APK
+        working-directory: flutter_app
+        run: flutter build apk --release --split-per-abi --android-skip-build-dependency-validation
 
       - name: Upload Built APK
         uses: actions/upload-artifact@v4
