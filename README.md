@@ -74,4 +74,4 @@ flutter_app/
 │       ├── gallery_screen.dart
 │       ├── about_screen.dart
 │       └── contact_screen.dart
-└── android/                   # Android native project
+└── android/                   # Android native project# Build trigger
