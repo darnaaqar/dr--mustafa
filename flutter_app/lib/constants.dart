@@ -47,6 +47,8 @@ class DentalTranslations {
       'select_time': 'اختر الوقت',
       'submit_booking': 'تأكيد الحجز الرقمي',
       'success_booking': 'تم تقديم طلب الحجز بنجاح!',
+      'no_services': 'لا توجد خدمات متاحة حالياً',
+      'no_gallery': 'لا توجد صور في المعرض حالياً',
     },
     'en': {
       'title': 'Dr. Mustafa Al-Rifai',
@@ -78,6 +80,8 @@ class DentalTranslations {
       'select_time': 'Select Time',
       'submit_booking': 'Confirm Digital Booking',
       'success_booking': 'Appointment submitted successfully!',
+      'no_services': 'No services available at the moment',
+      'no_gallery': 'No gallery images available at the moment',
     }
   };
 }

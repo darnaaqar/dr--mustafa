@@ -26,6 +26,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   late AnimationController _pulseController;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _currentTabIndex = 0;
+  
+  // Dynamic data from Supabase
+  List<Map<String, dynamic>> _services = [];
 
   @override
   void initState() {
@@ -34,16 +37,25 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       vsync: this,
       duration: const Duration(seconds: 3),
     )..repeat(reverse: true);
-
-    final tomorrow = DateTime.now().add(const Duration(days: 1));
-    _selectedDate = DateFormat('yyyy-MM-dd').format(tomorrow);
-    _selectedTime = "11:00 AM";
+    
+    _loadServices();
   }
 
   @override
   void dispose() {
     _pulseController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadServices() async {
+    try {
+      final services = await DatabaseService.instance.getServices();
+      setState(() {
+        _services = services;
+      });
+    } catch (e) {
+      print("Failed to load services for home grid: $e");
+    }
   }
 
   // Booking Form Controller states
@@ -150,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       ),
                       const SizedBox(height: 16),
 
-                      // Dropdown selection for clinical service
+                      // Dropdown selection for clinical service (from Supabase)
                       DropdownButtonFormField<String>(
                         dropdownColor: DentalColors.cardBg,
                         value: _selectedService,
@@ -163,17 +175,27 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           ),
                           prefixIcon: const Icon(Icons.medical_services, color: DentalColors.primaryAccent),
                         ),
-                        items: [
-                          DropdownMenuItem<String>(value: 'srv-1', child: const Text('Teeth Whitening')),
-                          DropdownMenuItem<String>(value: 'srv-2', child: const Text('Premium Veneers')),
-                          DropdownMenuItem<String>(value: 'srv-3', child: const Text('Dental Implants')),
-                          DropdownMenuItem<String>(value: 'srv-4', child: const Text('Invisalign Orthodontics')),
-                          // Legacy mapping for direct clicks
-                          DropdownMenuItem<String>(value: 'Teeth Whitening', child: const Text('Teeth Whitening (Legacy)')),
-                          DropdownMenuItem<String>(value: 'Veneers', child: const Text('Veneers (Legacy)')),
-                          DropdownMenuItem<String>(value: 'Dental Implants', child: const Text('Dental Implants (Legacy)')),
-                          DropdownMenuItem<String>(value: 'Orthodontics', child: const Text('Orthodontics (Legacy)')),
-                        ],
+                        items: _services.isEmpty
+                            ? [
+                                DropdownMenuItem<String>(
+                                  value: null,
+                                  child: Text(
+                                    widget.isArabic ? 'لا توجد خدمات' : 'No services available',
+                                    style: TextStyle(color: DentalColors.textSecondary),
+                                  ),
+                                ),
+                              ]
+                            : [
+                                ..._services.map((service) {
+                                  final title = widget.isArabic 
+                                      ? (service['title_ar'] ?? service['title_en'] ?? '') 
+                                      : (service['title_en'] ?? service['title_ar'] ?? '');
+                                  return DropdownMenuItem<String>(
+                                    value: service['id'],
+                                    child: Text(title),
+                                  );
+                                }).toList(),
+                              ],
                         onChanged: (val) => setModalState(() => _selectedService = val),
                         validator: (val) => val == null ? 'Required' : null,
                       ),
@@ -305,16 +327,29 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                     setModalState(() => _isBookingSubmitting = false);
                                     Navigator.pop(context); // Close sheet
 
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        backgroundColor: DentalColors.cardBg,
-                                        content: Text(
-                                          trans['success_booking']!,
-                                          style: const TextStyle(color: DentalColors.primaryAccent, fontWeight: FontWeight.bold),
-                                          textAlign: TextAlign.center,
+                                    if (isSuccess) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          backgroundColor: DentalColors.cardBg,
+                                          content: Text(
+                                            trans['success_booking']!,
+                                            style: const TextStyle(color: DentalColors.primaryAccent, fontWeight: FontWeight.bold),
+                                            textAlign: TextAlign.center,
+                                          ),
                                         ),
-                                      ),
-                                    );
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          backgroundColor: DentalColors.cardBg,
+                                          content: Text(
+                                            'Booking failed. Please try again.',
+                                            style: const TextStyle(color: Colors.redAccent),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      );
+                                    }
                                   }
                                 },
                                 child: Text(
@@ -547,6 +582,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   }
 
   Widget _buildHomeTab(Map<String, String> trans) {
+    final tomorrow = DateTime.now().add(const Duration(days: 1));
+    _selectedDate = DateFormat('yyyy-MM-dd').format(tomorrow);
+    _selectedTime = "11:00 AM";
+
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -666,37 +705,33 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
           const SizedBox(height: 36),
 
-          // Services Bento Grid Layout
-          GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 2,
-            childAspectRatio: 1.45,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            children: [
-              _buildBentoCard(
-                Icons.star_half,
-                widget.isArabic ? 'تبييض الأسنان' : 'Teeth Whitening',
-                widget.isArabic ? 'Teeth Whitening' : 'تبييض الأسنان',
-              ),
-              _buildBentoCard(
-                Icons.layers,
-                widget.isArabic ? 'الفينير' : 'Veneers',
-                widget.isArabic ? 'Veneers' : 'الفينير',
-              ),
-              _buildBentoCard(
-                Icons.shield_outlined,
-                widget.isArabic ? 'زراعة الأسنان' : 'Dental Implants',
-                widget.isArabic ? 'Dental Implants' : 'زراعة الأسنان',
-              ),
-              _buildBentoCard(
-                Icons.grid_3x3,
-                widget.isArabic ? 'تقويم الأسنان' : 'Orthodontics',
-                widget.isArabic ? 'Orthodontics' : 'تقويم الأسنان',
-              ),
-            ],
-          ).animate().fadeIn(delay: 600.ms).slideY(begin: 0.1, end: 0),
+          // Services Bento Grid Layout (Dynamic from Supabase)
+          _services.isEmpty
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Text(
+                      trans['no_services']!,
+                      style: const TextStyle(color: DentalColors.textSecondary, fontSize: 14),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                )
+              : GridView.count(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisCount: 2,
+                  childAspectRatio: 1.45,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  children: [
+                    for (int i = 0; i < _services.length && i < 4; i++)
+                      _buildBentoCard(
+                        _services[i],
+                        i,
+                      ),
+                  ],
+                ).animate().fadeIn(delay: 600.ms).slideY(begin: 0.1, end: 0),
 
           const SizedBox(height: 36),
 
@@ -836,8 +871,30 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     );
   }
 
-  // Builder for beautiful premium bento cards in the grid
-  Widget _buildBentoCard(IconData icon, String primaryTitle, String secondaryTitle) {
+  // Builder for beautiful premium bento cards in the grid (Dynamic from Supabase)
+  Widget _buildBentoCard(Map<String, dynamic> service, int index) {
+    final primaryTitle = widget.isArabic ? (service['title_ar'] ?? '') : (service['title_en'] ?? '');
+    final secondaryTitle = widget.isArabic ? (service['title_en'] ?? '') : (service['title_ar'] ?? '');
+    
+    // Map icon names to icons
+    IconData icon = Icons.health_and_safety;
+    switch(service['icon']) {
+      case 'sparkles':
+        icon = Icons.star_half;
+        break;
+      case 'smile':
+        icon = Icons.layers;
+        break;
+      case 'shield':
+        icon = Icons.shield_outlined;
+        break;
+      case 'activity':
+        icon = Icons.grid_3x3;
+        break;
+      default:
+        icon = Icons.health_and_safety;
+    }
+
     return Container(
       decoration: BoxDecoration(
         color: DentalColors.cardBg,
@@ -873,6 +930,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           ),
         ],
       ),
-    );
+    ).animate().fadeIn(delay: (100 * index).ms).scale(begin: const Offset(0.9, 0.9));
   }
 }

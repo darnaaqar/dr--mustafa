@@ -1,11 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import '../constants.dart';
+import '../database_service.dart';
 
-class ContactScreen extends StatelessWidget {
+class ContactScreen extends StatefulWidget {
   final bool isArabic;
 
   const ContactScreen({super.key, required this.isArabic});
+
+  @override
+  State<ContactScreen> createState() => _ContactScreenState();
+}
+
+class _ContactScreenState extends State<ContactScreen> {
+  Map<String, dynamic>? _settings;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSettings();
+  }
+
+  Future<void> _loadSettings() async {
+    try {
+      final settings = await DatabaseService.instance.getSettings();
+      setState(() {
+        _settings = settings;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   Future<void> _launch(BuildContext context, String url) async {
     final Uri uri = Uri.parse(url);
@@ -18,7 +48,13 @@ class ContactScreen extends StatelessWidget {
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(
+            backgroundColor: DentalColors.cardBg,
+            content: Text(
+              '$e',
+              style: const TextStyle(color: DentalColors.primaryAccent),
+            ),
+          ),
         );
       }
     }
@@ -26,30 +62,44 @@ class ContactScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final trans = DentalTranslations.localizedValues[widget.isArabic ? 'ar' : 'en']!;
+
+    if (_isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(color: DentalColors.primaryAccent),
+      );
+    }
+
+    final phone = _settings?['phone'] ?? '+971 4 555 1234';
+    final whatsapp = _settings?['whatsapp'] ?? '+971 50 987 6543';
+    final address = widget.isArabic 
+        ? (_settings?['address_ar'] ?? 'دبي مارينا، دبي') 
+        : (_settings?['address_en'] ?? 'Dubai Marina, Dubai');
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
       child: Column(
         children: [
           _buildContactCard(
             Icons.phone,
-            isArabic ? 'اتصل بنا' : 'Call Us',
-            '+971 4 555 1234',
-            () => _launch(context, 'tel:+97145551234'),
-          ),
+            widget.isArabic ? 'اتصل بنا' : 'Call Us',
+            phone,
+            () => _launch(context, 'tel:${phone.replaceAll(' ', '').replaceAll('+', '')}'),
+          ).animate().fadeIn(delay: 100.ms).slideX(begin: -0.1),
           const SizedBox(height: 16),
           _buildContactCard(
             Icons.message,
-            isArabic ? 'واتساب' : 'WhatsApp',
-            '+971 50 987 6543',
-            () => _launch(context, 'https://wa.me/971509876543'),
-          ),
+            widget.isArabic ? 'واتساب' : 'WhatsApp',
+            whatsapp,
+            () => _launch(context, 'https://wa.me/${whatsapp.replaceAll(' ', '').replaceAll('+', '').replaceAll('+', '')}'),
+          ).animate().fadeIn(delay: 200.ms).slideX(begin: 0.1),
           const SizedBox(height: 16),
           _buildContactCard(
             Icons.location_on,
-            isArabic ? 'موقع العيادة' : 'Location',
-            isArabic ? 'دبي مارينا، دبي' : 'Dubai Marina, Dubai',
-            () => _launch(context, 'https://maps.google.com/?q=Dubai+Marina'),
-          ),
+            widget.isArabic ? 'موقع العيادة' : 'Location',
+            address,
+            () => _launch(context, 'https://maps.google.com/?q=${Uri.encodeComponent(address)}'),
+          ).animate().fadeIn(delay: 300.ms).slideX(begin: -0.1),
           const SizedBox(height: 32),
           const Text(
             'v1.2.0-AI Clinical Support',
@@ -79,8 +129,14 @@ class ContactScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(color: DentalColors.textSecondary, fontSize: 12)),
-                  Text(val, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text(
+                    title,
+                    style: const TextStyle(color: DentalColors.textSecondary, fontSize: 12),
+                  ),
+                  Text(
+                    val,
+                    style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
             ),

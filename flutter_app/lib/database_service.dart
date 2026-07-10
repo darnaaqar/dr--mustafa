@@ -10,49 +10,45 @@ class DatabaseService {
     _isInitialized = true;
   }
 
-  // Fallback fallback premium service data in case Supabase is offline/unreachable
-  final List<Map<String, dynamic>> fallbackServices = [
-    {
-      'id': 'srv-1',
-      'title_ar': 'تبييض الأسنان بالليزر',
-      'title_en': 'Laser Teeth Whitening',
-      'short_ar': 'ابتسامة ناصعة البياض خلال جلسة واحدة بأحدث تقنيات الليزر البارد.',
-      'short_en': 'Bright white smile in one session using clinical laser systems.',
-      'icon': 'sparkles',
-      'image_url': 'https://lh3.googleusercontent.com/aida-public/AB6AXuA8IhJhiFXgCJoUCUhdnc489Z5-t5f73w8_vrm1xpYXedmkJ03q-koJmRfbOUzS_KQB0wsM6NaXDIHtJwV0K5zDDPGeUiBqxJ1vahCOg4L_EOFtulSHKST682LV0CZ5esHQYRSk_GGGGfRSBitnzecYBWkSCsJoqy8_nsg06W7xEsAhpHHHrHBwqXslITJ85aSDIxTyNuG8ThD74NSybCASpY9V3MVWaet_3GWL3yhamaVQj4dbDGJVwpsxnrt-nByMJbCOw2YSxps',
-    },
-    {
-      'id': 'srv-2',
-      'title_ar': 'الفينير والعدسات التجميلية',
-      'title_en': 'Premium Veneers',
-      'short_ar': 'تصميم ابتسامة هوليوود مخصصة تناسب ملامح وجهك بدقة متناهية.',
-      'short_en': 'Custom designed porcelain teeth tailored to your face structure.',
-      'icon': 'smile',
-      'image_url': 'https://lh3.googleusercontent.com/aida-public/AB6AXuA8IhJhiFXgCJoUCUhdnc489Z5-t5f73w8_vrm1xpYXedmkJ03q-koJmRfbOUzS_KQB0wsM6NaXDIHtJwV0K5zDDPGeUiBqxJ1vahCOg4L_EOFtulSHKST682LV0CZ5esHQYRSk_GGGGfRSBitnzecYBWkSCsJoqy8_nsg06W7xEsAhpHHHrHBwqXslITJ85aSDIxTyNuG8ThD74NSybCASpY9V3MVWaet_3GWL3yhamaVQj4dbDGJVwpsxnrt-nByMJbCOw2YSxps',
-    },
-    {
-      'id': 'srv-3',
-      'title_ar': 'زراعة الأسنان الرقمية',
-      'title_en': 'Digital Dental Implants',
-      'short_ar': 'غرسات تيتانيوم فورية موجهة بالكمبيوتر وبدون ألم.',
-      'short_en': 'Computer-guided painless instant titanium crown implants.',
-      'icon': 'shield',
-      'image_url': 'https://lh3.googleusercontent.com/aida-public/AB6AXuA8IhJhiFXgCJoUCUhdnc489Z5-t5f73w8_vrm1xpYXedmkJ03q-koJmRfbOUzS_KQB0wsM6NaXDIHtJwV0K5zDDPGeUiBqxJ1vahCOg4L_EOFtulSHKST682LV0CZ5esHQYRSk_GGGGfRSBitnzecYBWkSCsJoqy8_nsg06W7xEsAhpHHHrHBwqXslITJ85aSDIxTyNuG8ThD74NSybCASpY9V3MVWaet_3GWL3yhamaVQj4dbDGJVwpsxnrt-nByMJbCOw2YSxps',
-    },
-    {
-      'id': 'srv-4',
-      'title_ar': 'تقويم الأسنان غير المرئي',
-      'title_en': 'Invisalign Orthodontics',
-      'short_ar': 'تعديل اصطفاف الأسنان بأحدث القوالب الشفافة والمريحة.',
-      'short_en': 'Seamless, comfortable teeth aligning using crystal clear aligners.',
-      'icon': 'activity',
-      'image_url': 'https://lh3.googleusercontent.com/aida-public/AB6AXuA8IhJhiFXgCJoUCUhdnc489Z5-t5f73w8_vrm1xpYXedmkJ03q-koJmRfbOUzS_KQB0wsM6NaXDIHtJwV0K5zDDPGeUiBqxJ1vahCOg4L_EOFtulSHKST682LV0CZ5esHQYRSk_GGGGfRSBitnzecYBWkSCsJoqy8_nsg06W7xEsAhpHHHrHBwqXslITJ85aSDIxTyNuG8ThD74NSybCASpY9V3MVWaet_3GWL3yhamaVQj4dbDGJVwpsxnrt-nByMJbCOw2YSxps',
-    }
-  ];
+  bool get isInitialized => _isInitialized;
 
-  // Retrieve list of services
+  // Fetch settings from Supabase
+  Future<Map<String, dynamic>?> getSettings() async {
+    if (!_isInitialized) return null;
+    try {
+      final client = Supabase.instance.client;
+      final response = await client
+          .from('settings')
+          .select('*')
+          .limit(1)
+          .maybeSingle();
+      return response;
+    } catch (e) {
+      print("Settings fetch error: $e");
+      return null;
+    }
+  }
+
+  // Fetch doctor info from Supabase
+  Future<Map<String, dynamic>?> getDoctorInfo() async {
+    if (!_isInitialized) return null;
+    try {
+      final client = Supabase.instance.client;
+      final response = await client
+          .from('doctors')
+          .select('*')
+          .limit(1)
+          .maybeSingle();
+      return response;
+    } catch (e) {
+      print("Doctor info fetch error: $e");
+      return null;
+    }
+  }
+
+  // Retrieve list of services from Supabase
   Future<List<Map<String, dynamic>>> getServices() async {
-    if (!_isInitialized) return fallbackServices;
+    if (!_isInitialized) return [];
     try {
       final client = Supabase.instance.client;
       final response = await client
@@ -74,8 +70,25 @@ class DatabaseService {
         };
       }).toList();
     } catch (e) {
-      print("Supabase connection error, loading premium local backup services.");
-      return fallbackServices;
+      print("Supabase services fetch error: $e");
+      return [];
+    }
+  }
+
+  // Fetch gallery items from Supabase
+  Future<List<Map<String, dynamic>>> getGallery() async {
+    if (!_isInitialized) return [];
+    try {
+      final client = Supabase.instance.client;
+      final response = await client
+          .from('gallery')
+          .select('*')
+          .order('created_at', ascending: false);
+      
+      return List<Map<String, dynamic>>.from(response);
+    } catch (e) {
+      print("Supabase gallery fetch error: $e");
+      return [];
     }
   }
 
@@ -90,8 +103,8 @@ class DatabaseService {
     String preferredLanguage = 'ar',
   }) async {
     if (!_isInitialized) {
-      print("Offline mode: Simulated successful booking for $name on $date at $time");
-      return true;
+      print("Error: Supabase not initialized. Cannot book appointment.");
+      return false;
     }
     try {
       final client = Supabase.instance.client;
