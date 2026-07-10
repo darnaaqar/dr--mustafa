@@ -29,12 +29,8 @@ jobs:
           channel: 'stable'
           cache: false
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          cmdline-tools-version: '11173924'
-          accept-android-sdk-licenses: true
-          packages: 'build-tools;34.0.0,platforms;android-35,ndk;27.0.120979733'
+      - name: Accept Android SDK Licenses
+        run: echo "y" | flutter doctor --android-licenses || true
 
       - name: Clean Flutter
         working-directory: flutter_app
