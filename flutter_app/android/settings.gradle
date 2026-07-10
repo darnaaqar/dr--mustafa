@@ -19,7 +19,7 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven {
-            url 'https://download.flutter.io'
+            url "https://storage.googleapis.com/download.flutter.io"
         }
     }
 }
@@ -30,7 +30,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven {
-            url 'https://download.flutter.io'
+            url "https://storage.googleapis.com/download.flutter.io"
         }
     }
 }
