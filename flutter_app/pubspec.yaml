@@ -10,11 +10,13 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
-  supabase_flutter: ^2.5.0         # Supabase Client SDK
-  google_fonts: ^6.1.0             # For Cairo and Inter typography
-  url_launcher: ^6.2.5             # For phone/whatsapp dialing
+  supabase_flutter: ^2.8.0         # Supabase Client SDK (updated for app_links compatibility)
+  google_fonts: ^6.2.0             # For Cairo and Inter typography
+  url_launcher: ^6.3.0             # For phone/whatsapp dialing
   flutter_animate: ^4.5.0          # For smooth holographic animations
   intl: ^0.19.0                    # Date formatting
+  # Override app_links to compatible version
+  app_links: ^7.3.0
 
 dev_dependencies:
   flutter_test:
