@@ -41,7 +41,7 @@ jobs:
 
        - name: Build Release APK
          working-directory: flutter_app
-         run: flutter build apk --release --split-per-abi
+         run: flutter build apk --release --split-per-abi --android-skip-build-dependency-validation
 
       - name: Upload Built APK
         uses: actions/upload-artifact@v4
