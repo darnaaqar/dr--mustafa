@@ -29,8 +29,15 @@
 
 ### Build Status:
 - Code analysis: ✅ No errors (19 minor lint warnings)
-- Android build: In progress (NDK configuration issue being resolved)
+- Android build: Requires NDK configuration fix (environment issue)
 
 ### Git Commits:
-- `7d88bf5` - Initial Supabase integration
-- `b13fe59` - NDK version fix and API deprecation fix
+- `7d88bf5` - feat: Integrate Supabase for dynamic data
+- `b13fe59` - fix: Update NDK version and fix Supabase API deprecation  
+- `b7481b8` - fix: Remove NDK version constraint, add build log
+
+### APK Build Note:
+The APK build requires a properly installed Android NDK. To build the APK:
+1. Run `flutter build apk` in the flutter_app directory when NDK is properly installed
+2. Use GitHub Actions CI/CD to build automatically
+3. Install Android Studio and configure NDK through SDK Manager
