@@ -18,6 +18,9 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven {
+            url 'https://download.flutter.io'
+        }
     }
 }
 
