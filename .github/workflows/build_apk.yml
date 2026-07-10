@@ -34,11 +34,11 @@ jobs:
         with:
           api-level: 35
           build-tools: 35.0.0
-          ndk: 26.3.11579264
+          ndk: 25.1.8937393
 
       - name: Build Release APK
         working-directory: flutter_app
-        run: flutter build apk --release
+        run: flutter build apk --release --no-shrink
 
       - name: Upload Built APK
         uses: actions/upload-artifact@v4
