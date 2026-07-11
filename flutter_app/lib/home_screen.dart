@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'dart:ui';
 import 'constants.dart';
 import 'database_service.dart';
 import 'screens/services_screen.dart';
@@ -397,10 +398,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     final trans = DentalTranslations.localizedValues[widget.isArabic ? 'ar' : 'en']!;
-    final textDir = widget.isArabic ? TextDirection.rtl : TextDirection.ltr;
-
     return Directionality(
-      textDirection: textDir,
+      textDirection: widget.isArabic ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: DentalColors.background,
