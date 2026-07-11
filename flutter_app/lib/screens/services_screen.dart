@@ -5,12 +5,12 @@ import '../database_service.dart';
 
 class ServicesScreen extends StatefulWidget {
   final bool isArabic;
-  final Function(String?) onBookClick;
+  final Function(String?)? onBookClick;
 
   const ServicesScreen({
     super.key,
     required this.isArabic,
-    required this.onBookClick,
+    this.onBookClick,
   });
 
   @override
@@ -143,8 +143,22 @@ class _ServicesScreenState extends State<ServicesScreen> {
                           ),
                           elevation: 0,
                         ),
-                        onPressed: () => widget.onBookClick(service['id']),
-                        child: Text(widget.isArabic ? 'احجز الآن' : 'Book Now'),
+                        onPressed: () async {
+                          final result = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ServiceDetailScreen(
+                                isArabic: widget.isArabic,
+                                serviceId: service['id'],
+                              ),
+                            ),
+                          );
+                          // If booking was triggered from detail screen
+                          if (result != null && widget.onBookClick != null) {
+                            widget.onBookClick!(result);
+                          }
+                        },
+                        child: Text(widget.isArabic ? 'عرض التفاصيل' : 'View Details'),
                       ),
                     ],
                   ),

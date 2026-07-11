@@ -935,40 +935,53 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         icon = Icons.health_and_safety;
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        color: DentalColors.cardBg,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white10, width: 0.8),
-      ),
-      padding: const EdgeInsets.all(12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: DentalColors.primaryAccent, size: 22),
-          const SizedBox(height: 10),
-          Text(
-            primaryTitle,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 13,
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ServiceDetailScreen(
+              isArabic: widget.isArabic,
+              serviceId: service['id'],
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: 2),
-          Text(
-            secondaryTitle,
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.35),
-              fontSize: 10,
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: DentalColors.cardBg,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.white10, width: 0.8),
+        ),
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: DentalColors.primaryAccent, size: 22),
+            const SizedBox(height: 10),
+            Text(
+              primaryTitle,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+            const SizedBox(height: 2),
+            Text(
+              secondaryTitle,
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.35),
+                fontSize: 10,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
       ),
     ).animate().fadeIn(delay: (100 * index).ms).scale(begin: const Offset(0.9, 0.9));
   }
