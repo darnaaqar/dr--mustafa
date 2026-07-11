@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' hide TextDirection;
+import 'package:intl/date_format.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'constants.dart';
 import 'database_service.dart';
@@ -9,6 +10,7 @@ import 'screens/gallery_screen.dart';
 import 'screens/about_screen.dart';
 import 'screens/contact_screen.dart';
 import 'screens/appointments_screen.dart';
+import 'widgets/validators.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool isArabic;
@@ -139,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           ),
                           prefixIcon: const Icon(Icons.person, color: DentalColors.primaryAccent),
                         ),
-                        validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                        validator: (val) => FormValidators.validateName(val, widget.isArabic),
                         onSaved: (val) => _patientName = val ?? '',
                       ),
                       const SizedBox(height: 16),
@@ -159,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           ),
                           prefixIcon: const Icon(Icons.phone, color: DentalColors.primaryAccent),
                         ),
-                        validator: (val) => val == null || val.isEmpty ? 'Required' : null,
+                        validator: (val) => FormValidators.validatePhone(val, widget.isArabic),
                         onSaved: (val) => _patientPhone = val ?? '',
                       ),
                       const SizedBox(height: 16),
@@ -340,6 +342,20 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           ),
                                         ),
                                       );
+                                      
+                                      // Request app review after successful booking
+                                      Future.delayed(const Duration(seconds: 2), () async {
+                                        if (mounted) {
+                                          final InAppReview inAppReview = InAppReview.instance;
+                                          try {
+                                            if (await inAppReview.isAvailable()) {
+                                              await inAppReview.requestReview();
+                                            }
+                                          } catch (e) {
+                                            print("Review request error: $e");
+                                          }
+                                        }
+                                      });
                                     } else {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
