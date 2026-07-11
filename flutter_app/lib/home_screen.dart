@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/date_format.dart';
+import 'package:intl/intl.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'constants.dart';
