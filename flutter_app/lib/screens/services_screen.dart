@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../constants.dart';
 import '../database_service.dart';
+import 'service_detail_screen.dart';
 
 class ServicesScreen extends StatefulWidget {
   final bool isArabic;

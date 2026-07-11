@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'constants.dart';
 import 'database_service.dart';
 import 'screens/services_screen.dart';
+import 'screens/service_detail_screen.dart';
 import 'screens/gallery_screen.dart';
 import 'screens/about_screen.dart';
 import 'screens/contact_screen.dart';
