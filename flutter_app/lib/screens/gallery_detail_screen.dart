@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:image_compare/image_compare.dart';
+import 'package:before_after/before_after.dart';
 import '../constants.dart';
 import '../database_service.dart';
 
