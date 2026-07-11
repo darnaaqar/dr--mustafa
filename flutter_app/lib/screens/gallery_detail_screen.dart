@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:image_compare/image_compare.dart';
 import '../constants.dart';
 import '../database_service.dart';
 
@@ -148,6 +149,48 @@ class _GalleryDetailScreenState extends State<GalleryDetailScreen> {
                   ),
                 ),
               ).animate().fadeIn().scale(),
+            
+            // Before/After slider for before_after category
+            if (category == 'before_after') ...[
+              const SizedBox(height: 24),
+              Text(
+                widget.isArabic ? 'قبل وبعد' : 'Before / After',
+                style: TextStyle(
+                  color: DentalColors.primaryAccent,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ).animate().fadeIn(delay: 150.ms),
+              const SizedBox(height: 12),
+              Container(
+                height: 250,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.white10),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: BeforeAfter(
+                    before: Image.network(
+                      imageUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: DentalColors.cardBg,
+                        child: const Icon(Icons.broken_image, size: 60, color: Colors.white10),
+                      ),
+                    ),
+                    after: Image.network(
+                      imageUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: DentalColors.cardBg,
+                        child: const Icon(Icons.broken_image, size: 60, color: Colors.white10),
+                      ),
+                    ),
+                  ),
+                ),
+              ).animate().fadeIn(delay: 200.ms),
+            ],
             
             const SizedBox(height: 24),
 
