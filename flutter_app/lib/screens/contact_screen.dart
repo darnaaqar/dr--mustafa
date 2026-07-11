@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../constants.dart';
 import '../database_service.dart';
 
@@ -75,6 +77,7 @@ class _ContactScreenState extends State<ContactScreen> {
     final address = widget.isArabic 
         ? (_settings?['address_ar'] ?? 'دبي مارينا، دبي') 
         : (_settings?['address_en'] ?? 'Dubai Marina, Dubai');
+    final googleMapUrl = _settings?['google_map'] ?? 'https://maps.google.com/?q=Dubai';
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
@@ -91,7 +94,10 @@ class _ContactScreenState extends State<ContactScreen> {
             Icons.message,
             widget.isArabic ? 'واتساب' : 'WhatsApp',
             whatsapp,
-            () => _launch(context, 'https://wa.me/${whatsapp.replaceAll(' ', '').replaceAll('+', '').replaceAll('+', '')}'),
+            () async {
+              final waNumber = whatsapp.replaceAll(' ', '').replaceAll('+', '');
+              await _launch(context, 'https://wa.me/$waNumber');
+            },
           ).animate().fadeIn(delay: 200.ms).slideX(begin: 0.1),
           const SizedBox(height: 16),
           _buildContactCard(
@@ -100,6 +106,39 @@ class _ContactScreenState extends State<ContactScreen> {
             address,
             () => _launch(context, 'https://maps.google.com/?q=${Uri.encodeComponent(address)}'),
           ).animate().fadeIn(delay: 300.ms).slideX(begin: -0.1),
+          const SizedBox(height: 16),
+          _buildContactCard(
+            Icons.share,
+            widget.isArabic ? 'مشاركة التطبيق' : 'Share App',
+            widget.isArabic ? 'شارك التطبيق مع الأصدقاء' : 'Share app with friends',
+            () {
+              Share.share(
+                widget.isArabic 
+                  ? 'تفضل بزيارة عيادة د. مصطفى الرفاعي لطب وتجميل الأسنان: https://dr-mustafa-clinic.com'
+                  : 'Check out Dr. Mustafa Al-Rifai Dental Clinic: https://dr-mustafa-clinic.com',
+              );
+            },
+          ).animate().fadeIn(delay: 400.ms).slideX(begin: 0.1),
+          const SizedBox(height: 24),
+          Container(
+            height: 200,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.white10),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: GoogleMap(
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(25.2048, 55.2708), // Default Dubai coordinates
+                  zoom: 14,
+                ),
+                onMapCreated: (controller) {
+                  // Optional: store controller for later use
+                },
+              ),
+            ),
+          ).animate().fadeIn(delay: 500.ms),
           const SizedBox(height: 32),
           const Text(
             'v1.2.0-AI Clinical Support',
