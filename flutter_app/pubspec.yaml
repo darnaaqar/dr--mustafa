@@ -22,7 +22,7 @@ dependencies:
   provider: ^6.1.1                 # State management for theme
   google_maps_flutter: ^2.5.3      # Google Maps location
   share_plus: ^7.2.2               # Share app feature
-  before_after: ^2.0.0             # Before/After slider
+  before_after: ^3.2.0             # Before/After slider
   flutter_local_notifications: ^17.0.0  # Local notifications
   in_app_review: ^2.0.8            # Rate prompt
 
