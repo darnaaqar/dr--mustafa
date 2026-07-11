@@ -58,17 +58,18 @@ create table gallery(
 );
 
 create table appointments(
- id uuid primary key default gen_random_uuid(),
- patient_name text not null,
- phone text not null,
- email text,
- service_id uuid references services(id),
- preferred_language text default 'ar' check(preferred_language in ('ar','en')),
- appointment_date date not null,
- appointment_time time not null,
- notes text,
- status text default 'pending' check(status in ('pending','approved','completed','cancelled')),
- created_at timestamptz default now()
+  id uuid primary key default gen_random_uuid(),
+  device_id text not null,
+  patient_name text not null,
+  phone text not null,
+  email text,
+  service_id uuid references services(id),
+  preferred_language text default 'ar' check(preferred_language in ('ar','en')),
+  appointment_date date not null,
+  appointment_time time not null,
+  notes text,
+  status text default 'pending' check(status in ('pending','approved','completed','cancelled')),
+  created_at timestamptz default now()
 );
 
 create table settings(
@@ -330,6 +331,7 @@ insert into gallery(
 -- 6. Insert Demo Active Bookings / Appointments
 insert into appointments(
   id,
+  device_id,
   patient_name,
   phone,
   email,
@@ -342,6 +344,7 @@ insert into appointments(
 ) values
 (
   gen_random_uuid(),
+  'demo-device-001',
   'أحمد الشمري',
   '0501112233',
   'ahmed@demo.com',
@@ -354,6 +357,7 @@ insert into appointments(
 ),
 (
   gen_random_uuid(),
+  'demo-device-002',
   'Sarah Jenkins',
   '0553334455',
   'sarah.j@demo.com',
