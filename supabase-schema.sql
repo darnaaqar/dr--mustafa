@@ -199,7 +199,7 @@ insert into doctors(
   'https://instagram.com/dr.mustafa.clinic'
 );
 
--- 4. Insert Services Seed (Matching strict functional requirements)
+-- 4. Insert Services Seed (Matching strict functional requirements) - 8 services total
 insert into services(
   id,
   name_ar,
@@ -215,6 +215,7 @@ insert into services(
   sort_order,
   active
 ) values 
+-- Service 1: Laser Teeth Whitening
 (
   'e18cb8f0-15cc-4cbe-b4db-996ff2505ea1',
   'تبييض الأسنان بالليزر',
@@ -230,6 +231,7 @@ insert into services(
   1,
   true
 ),
+-- Service 2: Premium Veneers & Smile Design
 (
   'e18cb8f0-15cc-4cbe-b4db-996ff2505ea2',
   'الفينير والعدسات التجميلية',
@@ -245,6 +247,7 @@ insert into services(
   2,
   true
 ),
+-- Service 3: Digital Dental Implants
 (
   'e18cb8f0-15cc-4cbe-b4db-996ff2505ea3',
   'زراعة الأسنان الرقمية',
@@ -260,6 +263,7 @@ insert into services(
   3,
   true
 ),
+-- Service 4: Invisalign Clear Aligners
 (
   'e18cb8f0-15cc-4cbe-b4db-996ff2505ea4',
   'تقويم الأسنان غير المرئي',
@@ -274,9 +278,73 @@ insert into services(
   'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=600',
   4,
   true
+),
+-- Service 5: Gum Treatment
+(
+  'a11cb8f0-15cc-4cbe-b4db-996ff2505b01',
+  'علاج اللثة المتقدمة',
+  'Advanced Gum Treatment',
+  'علاج متكامل لمشاكل اللثة من التهاب إلى إعادة بناء Anastamosis utilizingone techniques.',
+  'Comprehensive gum disease treatment from inflammation to regenerative procedures.',
+  'علاج متخصص للالتهابات اللثوية باستخدام تقنيات التنظيف العميق Regenerative therapy知识和 التئام الجروح.',
+  'Specialized periodontal treatment using deep cleaning techniques and regenerative therapy for optimal healing.',
+  'علاج جذور متكامل، إعادة نمو أنسجة، حماية دائمة من الالتهاب.',
+  'Full root planing treatment, tissue regeneration therapy, permanent inflammation protection.',
+  'MedicalServices',
+  'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?auto=format&fit=crop&q=80&w=600',
+  5,
+  true
+),
+-- Service 6: Cosmetic Dentistry
+(
+  'b22cb8f0-15cc-4cbe-b4db-996ff2505b02',
+  'التجميل الشامل',
+  'Comprehensive Cosmetic Dentistry',
+  'تحويل كامل لمظهر الابتسامة باستخدام تقنيات التجميل المتقدمة المتعددة.',
+  'Complete smile transformation using multiple advanced cosmetic dentistry techniques.',
+  'نقدم حزمة شاملة من treatments التجميلية تشمل التبييض والفينير والعدسات في خطة علاجية موحدة.',
+  'We provide a comprehensive package of cosmetic treatments including whitening, veneers, and lenses in a unified treatment plan.',
+  'نتائج فورية، ابتسامة جديدة كلياً، تحسن كبير في المظهر العام.',
+  'Instant results, completely new smile, significant improvement in overall appearance.',
+  'Sparkles',
+  'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&fit=crop&q=80&w=600',
+  6,
+  true
+),
+-- Service 7: Emergency Dental Care
+(
+  'c33cb8f0-15cc-4cbe-b4db-996ff2505b03',
+  'رعاية طوارئ الأسنان',
+  'Emergency Dental Care',
+  'خدمات طوارئ أسنان متاحة على مدار الساعة لإدارة الألم والحالات الطارئة.',
+  '24/7 emergency dental services available for pain management and urgent cases.',
+  'فريق متخصص جاهز للتعامل مع حالات الطوارئ مثل ألم الأسنان الحاد، الكسور، والعدوى.',
+  'Specialized team ready to handle emergency cases like severe tooth pain, fractures, and infections.',
+  'خدمة 24/7، استجابة سريعة، تخفيف فوري للألم.',
+  '24/7 service, rapid response, immediate pain relief.',
+  'Shield',
+  'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=600',
+  7,
+  true
+),
+-- Service 8: Pediatric Dentistry
+(
+  'd44cb8f0-15cc-4cbe-b4db-996ff2505b04',
+  'طب أسنان الأطفال',
+  'Pediatric Dentistry',
+  'رعاية أسنان مخصصة للأطفال في بيئة ودية ومريحة لضمان تجربة إيجابية.',
+  'Specialized dental care for children in a friendly and comfortable environment ensuring positive experience.',
+  'نستخدم تقنيات خاصة للتعامل مع الأطفال وتجعل زيارتهم للعيادة تجربة ممتعة وخالية من الخوف.',
+  'We use special techniques for children making their clinic visit an enjoyable and fear-free experience.',
+  'بيئة صديقة للأطفال، معالجة لطيفة، تعليمات صحية ممتعة.',
+  'Kid-friendly environment, gentle treatment, fun health education.',
+  'Activity',
+  'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=600',
+  8,
+  true
 );
 
--- 5. Insert Gallery Seed (Bilingual Categories and Titles)
+-- 5. Insert Gallery Seed (Bilingual Categories and Titles) - 12 items total (3 per category)
 insert into gallery(
   id,
   service_id,
@@ -287,6 +355,7 @@ insert into gallery(
   description_en,
   image_url
 ) values
+-- Before & After (3 items)
 (
   gen_random_uuid(),
   'e18cb8f0-15cc-4cbe-b4db-996ff2505ea2',
@@ -299,7 +368,29 @@ insert into gallery(
 ),
 (
   gen_random_uuid(),
+  'e18cb8f0-15cc-4cbe-b4db-996ff2505ea1',
+  'before_after',
+  'تبييض ليزر احترافي',
+  'Professional Laser Whitening Results',
+  'نتائج مذهلة لتبييض الأسنان بالليزر البارد - 8 درجات أفتح في جلسة واحدة.',
+  'Amazing results from cold laser whitening - 8 shades lighter in a single session.',
+  'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?auto=format&fit=crop&q=80&w=600'
+),
+(
+  gen_random_uuid(),
   'e18cb8f0-15cc-4cbe-b4db-996ff2505ea3',
+  'before_after',
+  'زراعة فورية كاملة',
+  'Full Immediate Load Implants',
+  'استعادة كاملة للابتسامة باستخدام الزراعات الفورية - تحول مذهل في يوم واحد.',
+  'Complete smile restoration using immediate load implants - amazing transformation in one day.',
+  'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&q=80&w=600'
+),
+
+-- Technology (3 items)
+(
+  gen_random_uuid(),
+  null,
   'technology',
   'المسح الرقمي ثلاثي الأبعاد CAD-CAM',
   'High-Precision 3D CAD-CAM Scan',
@@ -310,13 +401,57 @@ insert into gallery(
 (
   gen_random_uuid(),
   null,
+  'technology',
+  'روبوت الجراحة الرقمية',
+  'Digital Surgical Robot',
+  'نظام الجراحة الرقمية الموجه بالكمبيوتر لزراعة الأسنان بدقة متناهية.',
+  'Computer-guided digital surgical system for dental implants with micrometric precision.',
+  'https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&q=80&w=600'
+),
+(
+  gen_random_uuid(),
+  null,
+  'technology',
+  'تصميم الابتسامة بالذكاء الاصطناعي',
+  'AI Smile Design Technology',
+  'برامج ذكية متطورة لتصميم الابتسامة المثالية قبل بدء العلاج.',
+  'Advanced AI software for designing the perfect smile before treatment begins.',
+  'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=600'
+),
+
+-- Clinic (3 items)
+(
+  gen_random_uuid(),
+  null,
   'clinic',
-  'غرفة العلاج الفاخرة المجهزة بالكامل',
+  'غرفةTreatment الفاخرة المجهزة بالكامل',
   'Luxury Treatment Suite',
   'بيئة علاجية هادئة ومعقمة مزودة بأعلى معايير التكنولوجيا الطبية وسبل الراحة.',
   'A tranquil, fully sterilized environment equipped with premium state-of-the-art dental units.',
   'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?auto=format&fit=crop&q=80&w=600'
 ),
+(
+  gen_random_uuid(),
+  null,
+  'clinic',
+  'قسم الجراحات المتقدمة',
+  'Advanced Surgery Department',
+  'غرف عمليات مجهزة بأحدث التقنيات لأجراء العمليات الجراحية الدقيقة.',
+  'Operating rooms equipped with latest technology for precise surgical procedures.',
+  'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=600'
+),
+(
+  gen_random_uuid(),
+  null,
+  'clinic',
+  'استقبال المرضى الفاخر',
+  'Premium Patient Reception',
+  'صالة استقبال فاخرة ومريحة لتجربة علاجية مميزة من لحظة الوصول.',
+  'Luxury and comfortable reception lounge for a distinctive treatment experience from arrival.',
+  'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=600'
+),
+
+-- Team (3 items)
 (
   gen_random_uuid(),
   null,
@@ -326,6 +461,26 @@ insert into gallery(
   'كادر طبي وتمريضي متكامل يقدم لكم الرعاية الطبية الفائقة بروح ملؤها الود والمهنية.',
   'A highly qualified team of dental assistants and professionals dedicated to your clinical comfort.',
   'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=600'
+),
+(
+  gen_random_uuid(),
+  null,
+  'team',
+  'فريق التخدير والرقابة',
+  'Anesthesia & Monitoring Team',
+  'فريق متخصص في التخدير والرقابة الحيوية لضمان راحة وأمان المرضى.',
+  'Specialized anesthesia and monitoring team ensuring patient comfort and safety.',
+  'https://images.unsplash.com/photo-1631815588090-4cc6959f2c2f?auto=format&fit=crop&q=80&w=600'
+),
+(
+  gen_random_uuid(),
+  null,
+  'team',
+  'فريق التصميم الرقمي',
+  'Digital Design Team',
+  'خبراء في تصميم الابتسامات الرقمية باستخدام أحدث برامج CAD-CAM.',
+  'Experts in digital smile design using latest CAD-CAM software technologies.',
+  'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=600'
 );
 
 -- 6. Insert Demo Active Bookings / Appointments

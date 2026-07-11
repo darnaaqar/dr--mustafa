@@ -671,57 +671,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
           const SizedBox(height: 32),
 
-          // Core Glowing Holographic Tooth scan view centerpiece
-          AnimatedBuilder(
-            animation: _pulseController,
-            builder: (context, child) {
-              return Container(
-                height: 200,
-                width: 200,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: DentalColors.primaryAccent.withOpacity(0.15 + (_pulseController.value * 0.15)),
-                    width: 2,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: DentalColors.primaryAccent.withOpacity(0.08 * _pulseController.value),
-                      blurRadius: 30,
-                      spreadRadius: 5,
-                    ),
-                  ],
-                ),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    // Rotating scanline effect
-                    Transform.scale(
-                      scale: 0.9 + (_pulseController.value * 0.1),
-                      child: Container(
-                        height: 180,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: DentalColors.primaryAccent.withOpacity(0.08),
-                            width: 1,
-                          ),
-                        ),
-                      ),
-                    ),
-                    // central tooth visual
-                    Icon(
-                      Icons.health_and_safety_sharp,
-                      size: 90,
-                      color: DentalColors.primaryAccent.withOpacity(0.85 + (_pulseController.value * 0.15)),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-
           const SizedBox(height: 24),
 
           // Translation Slogan Section
@@ -935,6 +884,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       default:
         icon = Icons.health_and_safety;
     }
+    final imageUrl = service['image_url'];
 
     return InkWell(
       onTap: () {
@@ -954,32 +904,63 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: Colors.white10, width: 0.8),
         ),
-        padding: const EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: DentalColors.primaryAccent, size: 22),
-            const SizedBox(height: 10),
-            Text(
-              primaryTitle,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 13,
+            if (imageUrl != null)
+              Container(
+                height: 60,
+                margin: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.white10),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    imageUrl,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      color: Colors.white10,
+                      child: Icon(icon, color: DentalColors.primaryAccent, size: 22),
+                    ),
+                  ),
+                ),
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(icon, color: DentalColors.primaryAccent, size: 22),
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 2),
-            Text(
-              secondaryTitle,
-              style: TextStyle(
-                color: Colors.white.withOpacity(0.35),
-                fontSize: 10,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    primaryTitle,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    secondaryTitle,
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.35),
+                      fontSize: 9,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
