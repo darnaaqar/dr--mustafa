@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:provider/provider.dart';
+import 'theme_notifier.dart';
 import 'constants.dart';
 import 'home_screen.dart';
 import 'database_service.dart';
@@ -30,6 +32,7 @@ class PremiumDentalApp extends StatefulWidget {
 
 class _PremiumDentalAppState extends State<PremiumDentalApp> {
   bool isArabic = true; // Default to Arabic as shown in the uploaded screenshot
+  final ThemeNotifier themeNotifier = ThemeNotifier();
 
   void toggleLanguage() {
     setState(() {
@@ -39,29 +42,39 @@ class _PremiumDentalAppState extends State<PremiumDentalApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Dr. Mustafa Clinic',
-      debugShowCheckedModeBanner: false,
-      locale: Locale(isArabic ? 'ar' : 'en'),
-      
-      // Modern High-Contrast Bioluminescent theme
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: DentalColors.background,
-        cardColor: DentalColors.cardBg,
-        primaryColor: DentalColors.primaryAccent,
-        dividerColor: Colors.white10,
-        textTheme: GoogleFonts.cairoTextTheme(ThemeData.dark().textTheme).copyWith(
-          bodyMedium: isArabic 
-            ? GoogleFonts.cairo(color: DentalColors.textSecondary)
-            : GoogleFonts.inter(color: DentalColors.textSecondary),
-          titleLarge: isArabic
-            ? GoogleFonts.cairo(color: Colors.white, fontWeight: FontWeight.bold)
-            : GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-      ),
-      home: HomeScreen(
-        isArabic: isArabic, 
-        onLanguageToggle: toggleLanguage,
+    return ChangeNotifierProvider.value(
+      value: themeNotifier,
+      child: Consumer<ThemeNotifier>(
+        builder: (context, themeNotifier, _) {
+          final useDark = themeNotifier.value;
+          return MaterialApp(
+            title: 'Dr. Mustafa Clinic',
+            debugShowCheckedModeBanner: false,
+            locale: Locale(isArabic ? 'ar' : 'en'),
+            
+            // Premium dark theme
+            theme: ThemeData.dark().copyWith(
+              scaffoldBackgroundColor: DentalColors.background,
+              cardColor: DentalColors.cardBg,
+              primaryColor: DentalColors.primaryAccent,
+              dividerColor: Colors.white10,
+              textTheme: GoogleFonts.cairoTextTheme(ThemeData.dark().textTheme).copyWith(
+                bodyMedium: isArabic 
+                  ? GoogleFonts.cairo(color: DentalColors.textSecondary)
+                  : GoogleFonts.inter(color: DentalColors.textSecondary),
+                titleLarge: isArabic
+                  ? GoogleFonts.cairo(color: Colors.white, fontWeight: FontWeight.bold)
+                  : GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // Light theme option
+            themeMode: useDark ? ThemeMode.dark : ThemeMode.light,
+            home: HomeScreen(
+              isArabic: isArabic, 
+              onLanguageToggle: toggleLanguage,
+            ),
+          );
+        },
       ),
     );
   }

@@ -7,6 +7,12 @@ class DentalColors {
   static const Color secondaryAccent = Color(0xFF39E6FF);
   static const Color textMain = Colors.white;
   static const Color textSecondary = Color(0xFFB6D3E5);
+  
+  // Light theme colors
+  static const Color lightBackground = Color(0xFFF5F7FA);
+  static const Color lightCardBg = Color(0xFFFFFFFF);
+  static const Color lightTextMain = Color(0xFF1A1A2E);
+  static const Color lightTextSecondary = Color(0xFF4A5568);
 
   static const LinearGradient buttonGradient = LinearGradient(
     colors: [Color(0xFF00D4FF), Color(0xFF00A6E6)],
