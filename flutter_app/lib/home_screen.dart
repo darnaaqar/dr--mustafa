@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'dart:ui';
 import 'constants.dart';
 import 'database_service.dart';
 import 'screens/services_screen.dart';
