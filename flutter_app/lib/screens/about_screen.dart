@@ -66,16 +66,37 @@ class _AboutScreenState extends State<AboutScreen> {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: DentalColors.primaryAccent, width: 2),
+              gradient: LinearGradient(
+                colors: [
+                  DentalColors.primaryAccent,
+                  DentalColors.secondaryAccent,
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: DentalColors.primaryAccent.withOpacity(0.4),
+                  blurRadius: 25,
+                  spreadRadius: 3,
+                ),
+              ],
             ),
-            child: CircleAvatar(
-              radius: 60,
-              backgroundImage: imageUrl != null 
-                  ? NetworkImage(imageUrl)
-                  : const AssetImage('assets/images/doctor_profile.png') as ImageProvider,
+            child: Container(
+              padding: const EdgeInsets.all(3),
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: DentalColors.background,
+              ),
+              child: CircleAvatar(
+                radius: 58,
+                backgroundImage: imageUrl != null 
+                    ? NetworkImage(imageUrl)
+                    : const AssetImage('assets/images/doctor_profile.png') as ImageProvider,
+              ),
             ),
           ).animate().fadeIn().scale(),
           const SizedBox(height: 24),
